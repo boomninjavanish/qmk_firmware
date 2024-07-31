@@ -48,3 +48,6 @@
 #define AUDIO_PWM_CHANNEL RP2040_PWM_CHANNEL_A
 #define AUDIO_INIT_DELAY
 #define AUDIO_CLICKY
+
+/* Mouse Emulation Settings */
+#define MK_COMBINED
