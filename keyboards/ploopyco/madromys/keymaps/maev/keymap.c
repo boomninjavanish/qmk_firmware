@@ -15,14 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#define PLOOPY_DRAGSCROLL_DIVISOR_V 1.5
-#define PLOOPY_DRAGSCROLL_DIVISOR_H 1.5
-#define PLOOPY_DRAGSCROLL_INVERT
-
-#define PLOOPY_DPI_OPTIONS { 1200, 1900, 2400 }
-#define PLOOPY_DPI_DEFAULT 1
-
 #include QMK_KEYBOARD_H
 
 enum LAYER_NAMES {
@@ -39,8 +31,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     */
     [DEFAULT_LYR] = LAYOUT( 
-        MO(NAV_SET_LYR), KC_BTN5, KC_BTN3, KC_BTN2, 
-        KC_BTN1,                           DRAG_SCROLL
+        MO(NAV_SET_LYR), KC_BTN5, DRAG_SCROLL, KC_BTN2, 
+        KC_BTN1,                               KC_BTN3
     ),
     [NAV_SET_LYR] = LAYOUT( 
         _______, C(KC_LEFT), C(KC_RIGHT), C(KC_UP),

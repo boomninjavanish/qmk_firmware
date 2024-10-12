@@ -16,6 +16,9 @@
 
 #include QMK_KEYBOARD_H
 
+extern MidiDevice midi_device;
+uint8_t midi_cc_16_value = 0;
+
 enum layer_names {
     DEFAULT_LYR,
     PICKER_LYR,
@@ -23,7 +26,8 @@ enum layer_names {
     FUSION_MAIN_LYR,
     FUSION_SKTCH_LYR,
     MOUSE_LYR,
-    STARBND_LYR
+    STARBND_LYR,
+    MIDI_LYR,
 };
 
 // place custom keyboard macros below
@@ -31,6 +35,8 @@ enum custom_keycodes {
     FUSION_PARAMS = SAFE_RANGE,
     FUSION_SKTCH,
     FUSION_CHMFR,
+    CC_16_UP,
+    CC_16_DN,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -60,6 +66,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // released
         }
         break;
+      case CC_16_UP:
+        if (record->event.pressed) {
+            // pressed
+            if(midi_cc_16_value < 6) midi_cc_16_value ++;
+            midi_send_cc(&midi_device, midi_config.channel, 16, midi_cc_16_value);
+        } else {
+            // released
+        }
+        break;
+      case CC_16_DN:
+        if (record->event.pressed) {
+            // pressed
+            if(midi_cc_16_value > 0) midi_cc_16_value --;
+            midi_send_cc(&midi_device, midi_config.channel, 16, midi_cc_16_value);
+        } else {
+            // released
+        }
+        break;
     }
       return true;
 };
@@ -81,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [PICKER_LYR] = LAYOUT(
                                                  QK_BOOT,
       DF(DEFAULT_LYR),     DF(SETTINGS_LYR),     DF(FUSION_MAIN_LYR),
-      DF(MOUSE_LYR),       DF(STARBND_LYR),      XXXXXXX,
+      DF(MOUSE_LYR),       DF(STARBND_LYR),      DF(MIDI_LYR),
       XXXXXXX,             XXXXXXX,              XXXXXXX,
       XXXXXXX,             XXXXXXX,              XXXXXXX
   ),
@@ -125,6 +149,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_A,             KC_S,      KC_D,
       KC_Q,             KC_E,      KC_SPACE
   ),
+  // MIDI
+  [MIDI_LYR] = LAYOUT(
+                      DF(PICKER_LYR),
+      MI_A,   MI_Bb,  MI_B,
+      MI_Fs,  MI_G,   MI_Gs,
+      MI_Ds,  MI_E,   MI_F,
+      MI_C,   MI_Cs,  MI_D
+  ),
   
 };
 
@@ -137,8 +169,9 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
   [SETTINGS_LYR]     = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
   [FUSION_MAIN_LYR]  = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
   [FUSION_SKTCH_LYR] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-  [MOUSE_LYR] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
-  [STARBND_LYR] = { ENCODER_CCW_CW(KC_WH_U, KC_WH_D) },
+  [MOUSE_LYR]        = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
+  [STARBND_LYR]      = { ENCODER_CCW_CW(KC_WH_U, KC_WH_D) },
+  [MIDI_LYR]         = { ENCODER_CCW_CW(CC_16_DN, CC_16_UP) },
 };
 #endif
 
@@ -163,7 +196,7 @@ char* oledtext[][8] = {
   [PICKER_LYR] = {
     "Home   Setup  Fusion ",
     "                     ",
-    "Mouse  StrBnd XXXXXX ",
+    "Mouse  StrBnd MIDI   ",
     "                     ",
     "XXXXXX XXXXXX XXXXXX ",
     "                     ",
@@ -224,6 +257,16 @@ char* oledtext[][8] = {
     "Left   Down   Right  ",
     "                     ",
     "DrpItm Intrct Jump   ",
+    "                     "
+  },
+  [MIDI_LYR] = {
+    "A      Bb/A#  B      ",
+    "                     ",
+    "Gb/F#  G      Ab/G#  ",
+    "                     ",
+    "Eb/D#  E      F      ",
+    "                     ",
+    "C      Db/C#  D      ",
     "                     "
   },
 };
