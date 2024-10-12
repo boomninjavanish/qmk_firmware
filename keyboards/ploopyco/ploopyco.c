@@ -20,6 +20,13 @@
 #include "analog.h"
 #include "opt_encoder.h"
 
+//#define PLOOPY_DRAGSCROLL_MOMENTARY
+#define PLOOPY_DRAGSCROLL_DIVISOR_V 60.0
+#define PLOOPY_DRAGSCROLL_DIVISOR_H 60.0
+
+#define PLOOPY_DPI_OPTIONS { 1200, 1900, 2400 }
+#define PLOOPY_DPI_DEFAULT 1
+
 // for legacy support
 #if defined(OPT_DEBOUNCE) && !defined(PLOOPY_SCROLL_DEBOUNCE)
 #    define PLOOPY_SCROLL_DEBOUNCE OPT_DEBOUNCE

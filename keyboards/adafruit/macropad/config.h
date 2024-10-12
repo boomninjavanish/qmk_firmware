@@ -51,3 +51,6 @@
 
 /* Mouse Emulation Settings */
 #define MK_COMBINED
+
+/* Enable MIDI */
+#define MIDI_ADVANCED
