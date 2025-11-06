@@ -31,8 +31,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     */
     [DEFAULT_LYR] = LAYOUT( 
-        MO(NAV_SET_LYR), KC_BTN5, DRAG_SCROLL, KC_BTN2, 
-        KC_BTN1,                               KC_BTN3
+        MO(NAV_SET_LYR), KC_BTN5, DRAG_SCROLL, KC_BTN3, 
+        KC_BTN1,                               KC_BTN2
     ),
     [NAV_SET_LYR] = LAYOUT( 
         _______, C(KC_LEFT), C(KC_RIGHT), C(KC_UP),
